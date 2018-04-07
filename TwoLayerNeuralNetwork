@@ -1,18 +1,86 @@
-  1 #coding:utf-8
-  2 #两层简单神经网络（全连接）
-  3 import tensorflow as tf
-  4
-  5 #定义输入和参数
-  6 x=tf.constant([[0.7,0.5]])
-  7 w1=tf.Variable(tf.random_normal([2,3],stddev=1,seed=1))
-  8 w2=tf.Variable(tf.random_normal([3,1],stddev=1,seed=1))
-  9
- 10 #定义前向传播过程
- 11 a=tf.matmul(x,w1)
- 12 y=tf.matmul(a,w2)
- 13
- 14 #用会话计算结果
- 15 with tf.Session() as sess:
- 16     init_op=tf.global_variables_initializer()
- 17     sess.run(init_op)
- 18     print"y is:\n",sess.run(y)
+#coding:utf-8
+#两层简单神经网络（全连接）
+import tensorflow as tf
+
+#定义输入和参数
+x=tf.constant([[0.7,0.5]])
+w1=tf.Variable(tf.random_normal([2,3],stddev=1,seed=1))
+w2=tf.Variable(tf.random_normal([3,1],stddev=1,seed=1))
+
+#定义前向传播过程
+a=tf.matmul(x,w1)
+y=tf.matmul(a,w2)
+
+#用会话计算结果
+with tf.Session() as sess:
+    init_op=tf.global_variables_initializer()
+    sess.run(init_op)
+    print"y is:\n",sess.run(y)
+
+结果：
+y is:
+[[3.0904665]]
+
+-----------------------------------------------------------------------------
+
+#coding:utf-8
+import tensorflow as tf
+
+#定义输入和参数
+#用placeholder实现输入定义（sess,run中喂一组数据）
+x=tf.placeholder(tf.float32,shape=(1,2))
+w1=tf.Variable(tf.random_normal([2,3],stddev=1,seed=1))
+w2=tf.Variable(tf.random_normal([3,1],stddev=1,seed=1))
+
+#定义前向传播过程
+a=tf.matmul(x,w1)
+y=tf.matmul(a,w2)
+
+#用会话计算结果
+with tf.Session() as sess:
+    init_op=tf.global_variables_initializer()
+    sess.run(init_op)
+    print"y is:\n",sess.run(y,feed_dict={x:[[0.7,0.5]]})
+
+结果：
+y is:
+[[3.0904665]]
+
+-----------------------------------------------------------------------------
+
+
+
+#coding:utf-8
+import tensorflow as tf
+
+#定义输入和参数
+#用placeholder实现输入定义（sess,run中喂多组数据）
+x=tf.placeholder(tf.float32,shape=(None,2))
+w1=tf.Variable(tf.random_normal([2,3],stddev=1,seed=1))
+w2=tf.Variable(tf.random_normal([3,1],stddev=1,seed=1))
+
+#定义前向传播过程
+a=tf.matmul(x,w1)
+y=tf.matmul(a,w2)
+
+#用会话计算结果
+with tf.Session() as sess:
+    init_op=tf.global_variables_initializer()
+    sess.run(init_op)
+    print"the result is:\n",sess.run(y,feed_dict={x:[[0.7,0.5],[    0.2,0.3],[0.3,0.4],[0.4,0.5]]})
+    print "w1:\n",sess.run(w1)
+    print "w2:\n",sess.run(w2)
+
+结果：
+the result is:
+[[3.0904665]
+ [1.2236414]
+ [1.7270732]
+ [2.2305048]]
+w1:
+[[-0.8113182   1.4845988   0.06532937]
+ [-2.4427042   0.0992484   0.5912243 ]]
+w2:
+[[-0.8113182 ]
+ [ 1.4845988 ]
+ [ 0.06532937]]
